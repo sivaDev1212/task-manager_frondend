@@ -7,21 +7,30 @@ import axios from "axios";
 
 const DashBoard = ()=>{
     const [products,setProducts] = useState([]);
-    const [tasks,setTasks] = useState(false);
+    // const [tasks,setTasks] = useState(false);
     const baseUrl = process.env.REACT_APP_API_BASE_URL;
     
     const [totalTask,setTotalTask] = useState(0);
     const [totalPendingTask,setTotalPendingTask] = useState(0);
     const [totalFinishesTask,setTotalFinishesTask] = useState(0);
+    const token = localStorage.getItem('loginKey');
 
     useEffect(()=>{
+        if (!token) {
+            console.error("User not authenticated");
+            return;
+          }
         const prodectData = async ()=>{
             
             try {
-             const result = await axios.get(baseUrl+'/api/items');
+             const result = await axios.get(baseUrl+'/api/items',{
+                headers: {
+                    'Authorization': `Bearer ${token}`, 
+                  }
+            });
              console.log('rees',result.data);
              setProducts(result.data);
-             setTasks(true);
+            //  setTasks(true);
              for (let index = 0; index < result.data.length; index++) {
                 if (result.data[index].countSummery) {
                     
@@ -40,6 +49,8 @@ const DashBoard = ()=>{
     },[]);
     const priorityListTotal =()=>{
         const totals = products.filter(item => item?.PrioritySummery);
+        console.log(totals);
+        
         
     }
     const priorityList = useMemo(() => [

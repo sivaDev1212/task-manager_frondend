@@ -33,7 +33,7 @@ const TaskList =()=>{
     const [products, setProducts] = useState(null);
     const [productDialog, setProductDialog] = useState(false);
     const [deleteProductDialog, setDeleteProductDialog] = useState(false);
-    const [deleteProductsDialog, setDeleteProductsDialog] = useState(false);
+    // const [deleteProductsDialog, setDeleteProductsDialog] = useState(false);
     const [product, setProduct] = useState(emptyProduct);
     const [selectedProducts, setSelectedProducts] = useState(null);
     const [submitted, setSubmitted] = useState(false);
@@ -45,14 +45,25 @@ const TaskList =()=>{
     const [endTime,setEndTime] = useState(null);
     const [newProdect,setNewProdect] = useState(false);
     const [newProdectDetail,setNewProdectDetail] = useState(emptyProduct);
-    const [productStartTime,setProductStartTime] = useState(null);
+    // const [productStartTime,setProductStartTime] = useState(null);
     // const [productEndTime,setProductEndTime] = useState(null);
     const baseUrl = process.env.REACT_APP_API_BASE_URL;
+    const token = localStorage.getItem('loginKey');  // Retrieve the token
+
+  
     useEffect(() => {
         var listofProdect=[];
+        if (!token) {
+            console.error("User not authenticated");
+            return;
+          }
         const prodectData = async ()=>{
            try {
-            const result = await axios.get(baseUrl+'/api/items');
+            const result = await axios.get(baseUrl+'/api/items',{
+                headers: {
+                    'Authorization': `Bearer ${token}`, 
+                  }
+            });
             console.log('res',result.data);
             for (let index = 0; index < result.data.length; index++) {
                 if (result?.data[index]?.task_id) {
@@ -91,9 +102,9 @@ const TaskList =()=>{
         setDeleteProductDialog(false);
     };
 
-    const hideDeleteProductsDialog = () => {
-        setDeleteProductsDialog(false);
-    };
+    // const hideDeleteProductsDialog = () => {
+    //     setDeleteProductsDialog(false);
+    // };
 
     const saveProduct = async () => {
         
@@ -140,7 +151,11 @@ const TaskList =()=>{
                     "end_time": formattedEndTime,
                     "priority": product.priority,
                     "task_status": product.task_status
-                  });
+                  },{
+                    headers: {
+                        'Authorization': `Bearer ${token}`, 
+                      }
+                });
                   console.log('response',response);
                   
                 const index = findIndexById(product.task_id);
@@ -155,7 +170,11 @@ const TaskList =()=>{
                     "priority": addingUserId.priority,
                     "task_status": 'pending',
                     "user_id":addingUserId.user_id
-                  });
+                  },{
+                    headers: {
+                        'Authorization': `Bearer ${token}`, 
+                      }
+                });
                   console.log('respons addede',response);
                 _products.push(response.data);
                 toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Product Created', life: 3000 });
@@ -203,14 +222,14 @@ const TaskList =()=>{
 
     
 
-    const deleteSelectedProducts = () => {
-        let _products = products.filter((val) => !selectedProducts.includes(val));
+    // const deleteSelectedProducts = () => {
+    //     let _products = products.filter((val) => !selectedProducts.includes(val));
 
-        setProducts(_products);
-        setDeleteProductsDialog(false);
-        setSelectedProducts(null);
-        toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Products Deleted', life: 3000 });
-    };
+    //     setProducts(_products);
+    //     setDeleteProductsDialog(false);
+    //     setSelectedProducts(null);
+    //     toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Products Deleted', life: 3000 });
+    // };
 
     
 
