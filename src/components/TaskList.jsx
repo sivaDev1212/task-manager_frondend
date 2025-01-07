@@ -176,10 +176,7 @@ const TaskList =()=>{
         setProductDialog(true);
     };
 
-    const confirmDeleteProduct = (product) => {
-        setProduct(product);
-        setDeleteProductDialog(true);
-    };
+    
 
     const deleteProduct = () => {
         let _products = products.filter((val) => val.id !== product.id);
@@ -203,20 +200,8 @@ const TaskList =()=>{
         return index;
     };
 
-    const createId = () => {
-        let id = '';
-        let chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
-        for (let i = 0; i < 5; i++) {
-            id += chars.charAt(Math.floor(Math.random() * chars.length));
-        }
-
-        return id;
-    };
-
-    const confirmDeleteSelected = () => {
-        setDeleteProductsDialog(true);
-    };
+    
 
     const deleteSelectedProducts = () => {
         let _products = products.filter((val) => !selectedProducts.includes(val));
@@ -313,19 +298,14 @@ const TaskList =()=>{
             <Button label="Yes" icon="pi pi-check" severity="danger" onClick={deleteProduct} />
         </React.Fragment>
     );
-    const deleteProductsDialogFooter = (
-        <React.Fragment>
-            <Button label="No" icon="pi pi-times" outlined onClick={hideDeleteProductsDialog} />
-            <Button label="Yes" icon="pi pi-check" severity="danger" onClick={deleteSelectedProducts} />
-        </React.Fragment>
-    );
+    
     const handleChange = (e) => {
         setIsChecked(e.value); 
       };
       const formattedStartTime = format(startTime, 'yyyy-MM-dd HH:mm:ss');
 
       const formattedEndTime = format(endTime, 'yyyy-MM-dd HH:mm:ss');
-      const formattedProdectStart = format(productStartTime, 'yyyy-MM-dd HH:mm:ss');
+    //   const formattedProdectStart = format(productStartTime, 'yyyy-MM-dd HH:mm:ss');
 
     return(
         <>
