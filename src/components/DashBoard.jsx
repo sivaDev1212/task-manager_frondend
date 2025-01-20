@@ -13,7 +13,8 @@ const DashBoard = ()=>{
     const [totalTask,setTotalTask] = useState(0);
     const [totalPendingTask,setTotalPendingTask] = useState(0);
     const [totalFinishesTask,setTotalFinishesTask] = useState(0);
-    const token = localStorage.getItem('loginKey');
+    const [token, setToken] = useState(localStorage.getItem('loginKey'));
+    // const token = localStorage.getItem('loginKey');
 
     useEffect(()=>{
         if (!token) {
